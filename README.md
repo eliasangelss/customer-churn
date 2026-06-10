@@ -14,6 +14,7 @@ In 2024, I participated in Carnegie Mellon University's four-week summer program
 
 - **Source:** [Kaggle Customer Churn Dataset](https://www.kaggle.com/datasets/muhammadshahidazeem/customer-churn-dataset) (Modified)
 - **Size:** 505,206 entries
+- **Features:** Customer ID, age, gender, tenure, usage frequency, support calls, payment delay, subscription type, contract length, total spend, last transaction, churn
 - **Target variable:** `Churn` (binary)
 
 ---
