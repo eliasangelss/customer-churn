@@ -19,9 +19,9 @@ In 2024, I participated in Carnegie Mellon University's four-week summer program
 
 ---
 
-## Models & Results
+## Results
 
-Three models were trained and evaluated using Mean Squared Error (MSE) and Mean Absolute Error (MAE):
+The three models were first trained and evaluated using Mean Squared Error (MSE) and Mean Absolute Error (MAE):
 
 | Model | MSE | MAE |
 |---|---|---|
@@ -29,19 +29,66 @@ Three models were trained and evaluated using Mean Squared Error (MSE) and Mean 
 | CART Decision Tree | 0.1001 | 0.1001 |
 | Multiple Linear Regression | 0.1456 | 0.3170 |
 
-Our **KPI** (Key Performance Indicator) was **Mean Absolute Error** (MAE) because we chose not to remove our outliers from the dataset before doing our analysis. MAE is less sensitive to outliers, meaning that the results of our algorithms were less swayed by having wider margins in terms of age and tenure.
+Our **KPI** (Key Performance Indicator) was **Mean Absolute Error** (MAE) during the original capstone as we chose not to remove our outliers from the dataset before doing our analysis. MAE is less sensitive to outliers, meaning that the results of our algorithms were less swayed by having wider margins in terms of age and tenure. 
 
 **Random Forest was the best-performing model**, with the lowest error across both metrics.
 
-<img src="images/churn_rf.png" width="600"/>
+That being said, I went back to create classification reports and confusion matrices for each model (separate from our learning exercise), aiming to give clearer insights as to how each model performed when determining if a customer would or would not churn. With new ways of evaluating the data, the RF model continued to prove itself as the best option. It caught 98% of churners, while the CART model and Multiple Linear Regression model missed significantly more.
 
-### Top Features (Random Forest)
+### Confusion Matrix (Random Forest)
+
+<img src="images/rf_confusion_matrix.png" width="500"/>
+
+### Classifcation Report (Random Forest)
+
+|  | Precision | Recall | F1-Score | Support |
+|---|---|---|---|---|
+| No Churn | 0.97 | 0.86 | 0.91 | 56,160 |
+| Churn | 0.90 | 0.98 | 0.94 | 70,142 |
+| Accuracy |  |  | 0.93 | 126,302 |
+| Macro Avg | 0.94 | 0.92 | 0.93 | 126,302 | 
+| Weighted Avg | 0.93 | 0.93 | 0.93 | 126,302 |
+
+### Confusion Matrix (CART Decision Tree)
+
+<img src="images/cart_confusion_matrix.png" width="500"/>
+
+### Classifcation Report (CART Decision Tree)
+
+|  | Precision | Recall | F1-Score | Support |
+|---|---|---|---|---|
+| No Churn | 0.91 | 0.86 | 0.88 | 56,160 |
+| Churn | 0.90 | 0.93 | 0.91 | 70,142 |
+| Accuracy |  |  | 0.90 | 126,302 |
+| Macro Avg | 0.90 | 0.90 | 0.90 | 126,302 | 
+| Weighted Avg | 0.90 | 0.90 | 0.90 | 126,302 |
+
+### Confusion Matrix (Multiple Linear Regression)
+
+<img src="images/mlr_confusion_matrix.png" width="500"/>
+
+### Classifcation Report (Multiple Linear Regression)
+
+|  | Precision | Recall | F1-Score | Support |
+|---|---|---|---|---|
+| No Churn | 0.77 | 0.83 | 0.80 | 56,160 |
+| Churn | 0.86 | 0.80 | 0.83 | 70,142 |
+| Accuracy |  |  | 0.82 | 126,302 |
+| Macro Avg | 0.81 | 0.82 | 0.81 | 126,302 | 
+| Weighted Avg | 0.82 | 0.82 | 0.82 | 126,302 |
+
+## Top Features
+
+### Main Indicators
 
 1. Support Calls (Score > 0.20)
 2. Total Spend
-3. Age (In the original project, it was Payment Delay)
+3. Age (Payment delay in the original project)
 
-### Correlation Matrix
+<img src="images/churn_rf.png" width="600"/>
+
+
+### Prediction Values Correlation Matrix
 
 | Feature | Correlation |
 |---|---|
@@ -51,22 +98,19 @@ Our **KPI** (Key Performance Indicator) was **Mean Absolute Error** (MAE) becaus
 | Total Spend | −0.3697 (strongest negative predictor) |
 | Usage Frequency | -0.0533 (second strongest negative) |
 | Tenure | -0.0213 (third strongest negative) |
-
+<br>
 <img src="images/churn_correlation.png" width="600"/>
 
 ---
 
 ## Key Takeaways
 
-- Customers with **high support call volume** are the strongest churn signal — companies should invest in more customer service training and larger teams.
-   - Nearly three out of five customers report that good customer service is vital for them to feel loyalty toward a brand *(Zendesk, 2018)*
-   - 68% of customers say that they are willing to pay more for products and services from a brand known to offer good customer service experiences *(HubSpot, 2018)*
+- Customers with **high support call volume** are the strongest churn signal — companies should invest in more customer service training and larger teams. Nearly three out of five customers report that good customer service is vital for them to feel loyalty toward a brand *(Zendesk, 2018)* Furthermore, 68% of customers say that they are willing to pay more for products and services from a brand known to offer good customer service experiences *(HubSpot, 2018)*
    - The data analysis showed that ⅓ of customers in this dataset churned as a result of having 5 or more support calls.
-- Customers with **higher total spend** are actually *less* likely to churn, suggesting loyalty among higher-value customers.
-   - That being said, customers will want to move their money away from the company if the service they receive is poor or unsatisfactory.
+- Customers with **higher total spend** are actually *less* likely to churn, suggesting loyalty among higher-value customers. That being said, customers will want to move their money away from the company if the service they receive is poor or unsatisfactory.
    - 65% of customers say that they have changed to a different brand because of a poor experience *(Khoros, 2024)*
-- **Random forests significantly outperformed** both the CART baseline and linear regression, reducing MSE by ~27% over CART.
-   - Specifically for MLR, it's likely that the poor performance was due to it being less suitable for classification tasks such as this one.
+- **Random forests significantly outperformed** both the CART baseline and linear regression, reducing MSE by ~27% over CART. Its recall being 98% when it comes to correctly identifying churn is key, since it only misses 1,254 customers out of 70,142. There were still 7,952 false positives, but wasted retention efforts are much less costly than losing customers.
+   - Specifically for MLR, it's likely that the poor performance was due to it being less suitable for classification tasks such as this one. With the new addition, it's easier to see its weakness compared to the other two models. It misses 13,975 churners which is over 11x more than the top performing model. Objectively, it's an unsafe option for businesses to use in this scenario.
 
 ---
 
@@ -110,6 +154,7 @@ customer-churn/
 ### *Random Forest Model*
 - **Number of Estimators:** 10
 - **Criterion:** Gini
+
 
 ---
 
